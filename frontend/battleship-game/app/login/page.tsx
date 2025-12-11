@@ -29,36 +29,51 @@ export default function LoginPage() {
         }
         else {
             const username = data.username;
-
-            if (username) {
-                localStorage.setItem("currentUser", username);
-                console.log('Player login successful');
-                router.push("/game");
-            }
-            else {
-                setErrorMessage("Server returned success but no username. Please try again.");
-                console.error("Login successful but missing username:", data);
-            }
+            localStorage.setItem("currentUser", username);
+            console.log('Player login successful');
+            router.push("/home");
         }
     };
 
     return (
-        <main className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-            <Card className="w-full max-w-sm rounded-2xl shadow-xl">
+        <main className="min-h-screen flex items-center justify-center bg-gray-900 p-4 text-white">
+            <Card className="w-full max-w-sm rounded-2xl shadow-xl bg-gray-800 text-white">
                 <CardContent className="flex flex-col gap-4 p-6">
-                    <h1 className="text-xl font-bold text-center mb-2">Login</h1>
-
-                    <Input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                    <Input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-
+                    <h1 className="text-2xl font-bold text-center mb-2">Login</h1>
+                    <Input
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        className="bg-gray-700 text-white placeholder-gray-400 border-none"
+                    />
+                    <Input
+                        placeholder="Password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="bg-gray-700 text-white placeholder-gray-400 border-none"
+                    />
                     {errorMessage && (
-                        <div className="error-message" role="alert" style={{ color: 'red', textAlign: 'center' }}>
+                        <p
+                            role="alert"
+                            className="text-red-400 text-center"
+                        >
                             {errorMessage}
-                        </div>
+                        </p>
                     )}
-
-                    <Button className="rounded-2xl py-5 text-lg" onClick={handleLogin}>
+                    <Button
+                        className="rounded-2xl py-5 text-lg w-full"
+                        onClick={handleLogin}
+                        disabled={!username || !password}
+                    >
                         Login
+                    </Button>
+                    <Button
+                        variant="link"
+                        className="text-gray-400 underline hover:text-gray-300 text-shadow-md"
+                        onClick={() => router.replace("/")}
+                    >
+                        Back
                     </Button>
                 </CardContent>
             </Card>
