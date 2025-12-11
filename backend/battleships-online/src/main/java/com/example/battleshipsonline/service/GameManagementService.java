@@ -1,11 +1,10 @@
 package com.example.battleshipsonline.service;
 
-import com.example.battleshipsonline.exception.InvalidActionException;
 import com.example.battleshipsonline.exception.InvalidGameException;
 import com.example.battleshipsonline.model.Board;
 import com.example.battleshipsonline.model.Game;
-import com.example.battleshipsonline.model.enums.GameStatus;
 import com.example.battleshipsonline.model.Player;
+import com.example.battleshipsonline.model.enums.GameStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -33,10 +32,10 @@ public class GameManagementService {
     public void connectToGame(String gameId, Player player) {
         Game game = getGame(gameId);
         if (game.getPlayer1().getUsername().equals(player.getUsername())) {
-            throw new InvalidActionException("You can't join your own game");
+            throw new InvalidGameException("You can't join your own game.");
         }
         if (!game.isWaitingForPlayer()) {
-            throw new InvalidGameException("Game is already full");
+            throw new InvalidGameException("Game is already full.");
         }
 
         game.setStatus(GameStatus.PLACING_SHIPS);
@@ -47,7 +46,7 @@ public class GameManagementService {
     public Game getGame(String gameId) {
         Game game = games.get(gameId);
         if (game == null) {
-            throw new InvalidGameException("Game not found");
+            throw new InvalidGameException("Game not found.");
         }
         return game;
     }

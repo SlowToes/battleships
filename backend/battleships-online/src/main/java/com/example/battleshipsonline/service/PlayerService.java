@@ -22,7 +22,7 @@ public class PlayerService {
         return player;
     }
 
-    public String loginAsGuest() {
+    public Player loginAsGuest() {
         String username;
         do {
             username = "Guest" + random.nextInt(1_000_000);
@@ -32,7 +32,7 @@ public class PlayerService {
 
         Player player = new Player(username, password);
         players.put(username, player);
-        return username;
+        return player;
     }
 
     public Player registerAsPlayer(String username, String password) {
@@ -45,7 +45,7 @@ public class PlayerService {
         return player;
     }
 
-    public void login(String username, String password) {
+    public Player login(String username, String password) {
         Player player = players.get(username);
 
         if (player == null) {
@@ -54,5 +54,6 @@ public class PlayerService {
         if (!player.getPassword().equals(password)) {
             throw new InvalidCredentialException("Invalid password");
         }
+        return player;
     }
 }

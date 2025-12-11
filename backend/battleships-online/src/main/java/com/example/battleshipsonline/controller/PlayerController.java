@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/players")
 @RequiredArgsConstructor
@@ -22,9 +20,9 @@ public class PlayerController {
     private final PlayerService playerService;
 
     @PostMapping("/register/guest")
-    public ResponseEntity<@NonNull Map<String, String>> registerAsGuest() {
-        String username = playerService.loginAsGuest();
-        return ResponseEntity.ok(Map.of("username", username));
+    public ResponseEntity<@NonNull PlayerResponse> registerAsGuest() {
+        Player player = playerService.loginAsGuest();
+        return ResponseEntity.ok(new PlayerResponse(player.getUsername(), player.getPassword()));
     }
 
     @PostMapping("/register/player")
@@ -34,8 +32,8 @@ public class PlayerController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<@NonNull String> login(@RequestBody LoginRequest request) {
-        playerService.login(request.username(), request.password());
-        return ResponseEntity.ok("Login successful");
+    public ResponseEntity<@NonNull PlayerResponse> login(@RequestBody LoginRequest request) {
+        Player player = playerService.login(request.username(), request.password());
+        return ResponseEntity.ok(new PlayerResponse(player.getUsername(), player.getPassword()));
     }
 }
