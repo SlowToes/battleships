@@ -37,10 +37,10 @@ public class GameController {
 
         simpMessagingTemplate.convertAndSend(
                 "/topic/game/" + gameId,
-                new GameResponse(gameId, "PLAYER_JOINED", player.getUsername() + " joined")
+                new GameResponse(gameId, "GAME_READY", "Opponent found. Start placing ships!")
         );
 
-        return ResponseEntity.ok(new GameResponse(gameId, "PLACING_SHIPS", "Joined game"));
+        return ResponseEntity.ok(new GameResponse(gameId, "GAME_READY", "Joined game. Ready to place ships."));
     }
 
     @PostMapping("/{gameId}/ships")

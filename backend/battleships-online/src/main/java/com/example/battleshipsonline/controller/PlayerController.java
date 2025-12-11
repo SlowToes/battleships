@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/players")
 @RequiredArgsConstructor
@@ -20,9 +22,9 @@ public class PlayerController {
     private final PlayerService playerService;
 
     @PostMapping("/register/guest")
-    public ResponseEntity<@NonNull String> registerAsGuest() {
+    public ResponseEntity<@NonNull Map<String, String>> registerAsGuest() {
         String username = playerService.loginAsGuest();
-        return ResponseEntity.ok("Login as " + username + " successful");
+        return ResponseEntity.ok(Map.of("username", username));
     }
 
     @PostMapping("/register/player")
