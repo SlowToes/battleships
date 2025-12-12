@@ -32,10 +32,10 @@ public class GameManagementService {
     public void connectToGame(String gameId, Player player) {
         Game game = getGame(gameId);
         if (game.getPlayer1().getUsername().equals(player.getUsername())) {
-            throw new InvalidGameException("You can't join your own game.");
+            throw new InvalidGameException("You can't join your own game");
         }
         if (!game.isWaitingForPlayer()) {
-            throw new InvalidGameException("Game is already full.");
+            throw new InvalidGameException("Game is already full");
         }
 
         game.setStatus(GameStatus.PLACING_SHIPS);
@@ -46,7 +46,7 @@ public class GameManagementService {
     public Game getGame(String gameId) {
         Game game = games.get(gameId);
         if (game == null) {
-            throw new InvalidGameException("Game not found.");
+            throw new InvalidGameException("Game not found");
         }
         return game;
     }
