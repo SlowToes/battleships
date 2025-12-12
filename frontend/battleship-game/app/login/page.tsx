@@ -1,39 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useLogin } from "@/lib/hooks/auth/useLogin";
+import { useBack } from "@/lib/hooks/util/useBack";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 export default function LoginPage() {
-    const router = useRouter();
+    const {
+        username,
+        password,
+        errorMessage,
+        setUsername,
+        setPassword,
+        handleLogin,
+    } = useLogin();
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
-
-    const handleLogin = async () => {
-        setErrorMessage("");
-
-        const res = await fetch("http://localhost:8080/api/players/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password }),
-        });
-
-        const data = await res.json();
-        if (!res.ok) {
-            setErrorMessage("Failed to login. Incorrect username or password. Please try again.");
-            console.error('Login failed:', data);
-        }
-        else {
-            const username = data.username;
-            localStorage.setItem("currentUser", username);
-            console.log('Player login successful');
-            router.push("/home");
-        }
-    };
+    const { goBack } = useBack();
 
     return (
         <main className="min-h-screen flex items-center justify-center bg-gray-900 p-4 text-white">
@@ -53,14 +36,7 @@ export default function LoginPage() {
                         onChange={(e) => setPassword(e.target.value)}
                         className="bg-gray-700 text-white placeholder-gray-400 border-none"
                     />
-                    {errorMessage && (
-                        <p
-                            role="alert"
-                            className="text-red-400 text-center"
-                        >
-                            {errorMessage}
-                        </p>
-                    )}
+                    {errorMessage && <p role="alert" className="text-red-400 text-center">{errorMessage}</p>}
                     <Button
                         className="rounded-2xl py-5 text-lg w-full"
                         onClick={handleLogin}
@@ -69,9 +45,9 @@ export default function LoginPage() {
                         Login
                     </Button>
                     <Button
-                        variant="link"
                         className="text-gray-400 underline hover:text-gray-300 text-shadow-md"
-                        onClick={() => router.replace("/")}
+                        variant="link"
+                        onClick={goBack}
                     >
                         Back
                     </Button>
