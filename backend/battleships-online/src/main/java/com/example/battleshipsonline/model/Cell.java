@@ -11,7 +11,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Cell {
+
     private boolean occupied;
+    private boolean draftOccupied;
     private boolean hit;
     private ShipName name;
+
+    public void commitDraft() {
+        if (draftOccupied) {
+            occupied = true;
+            draftOccupied = false;
+        }
+    }
 }

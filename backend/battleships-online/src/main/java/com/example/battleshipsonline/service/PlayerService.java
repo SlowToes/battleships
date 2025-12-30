@@ -1,58 +1,103 @@
 package com.example.battleshipsonline.service;
 
-import com.example.battleshipsonline.exception.InvalidCredentialException;
-import com.example.battleshipsonline.exception.InvalidPlayerException;
+import com.example.battleshipsonline.exception.ex.InvalidPlayerException;
 import com.example.battleshipsonline.model.Player;
+import com.example.battleshipsonline.repository.PlayerRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.NullMarked;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 @Service
-public class PlayerService {
-    private final Map<String, Player> players = new HashMap<>();
+@RequiredArgsConstructor
+public class PlayerService implements UserDetailsService {
+
+    private final PlayerRepository playerRepository;
+    private final PasswordEncoder passwordEncoder;
     private final Random random = new Random();
 
-    public Player getPlayer(String username) {
-        Player player = players.get(username);
-        if (player == null) {
-            throw new InvalidPlayerException("Player not found");
+    @Override
+    public @NullMarked UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Player player = playerRepository.findByUsername(username);
+        if (player != null) {
+            return User.builder()
+                    .username(player.getUsername())
+                    .password(player.getPassword())
+                    .build();
         }
-        return player;
+        else {
+            throw new UsernameNotFoundException(username);
+        }
     }
 
-    public Player loginAsGuest() {
+    public Player createGuest(HttpServletRequest request, HttpServletResponse response) {
         String username;
         do {
             username = "Guest" + random.nextInt(1_000_000);
-        } while (players.containsKey(username));
+        } while (playerRepository.existsByUsername(username));
 
-        String password = "GuestPassword" + random.nextInt(1_000_000);
+        String rawPassword = "Password" + random.nextInt(1_000_000);
 
-        Player player = new Player(username, password);
-        players.put(username, player);
-        return player;
+        Player player = Player.builder()
+                .username(username)
+                .password(passwordEncoder.encode(rawPassword))
+                .build();
+
+        Player saved = playerRepository.save(player);
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(username, null, null);
+        authenticate(request, response, auth);
+
+        return saved;
     }
 
-    public Player registerAsPlayer(String username, String password) {
-        if (players.containsKey(username)) {
-            throw new InvalidCredentialException("Username already exists");
-        }
+    public Player createPlayer(HttpServletRequest request, HttpServletResponse response, String username, String password) {
+        Player player = Player.builder()
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .build();
 
-        Player player = new Player(username, password);
-        players.put(username, player);
-        return player;
+        Player saved = playerRepository.save(player);
+
+        Authentication auth = new UsernamePasswordAuthenticationToken(username, null, null);
+        authenticate(request, response, auth);
+
+        return saved;
     }
 
-    public Player login(String username, String password) {
-        Player player = players.get(username);
+    public void authenticate(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(authentication);
+        SecurityContextHolder.setContext(context);
 
+        new HttpSessionSecurityContextRepository().saveContext(context, request, response);
+    }
+
+    public Player findByPlayerId(Long playerId) {
+        Player player = playerRepository.findByPlayerId(playerId);
         if (player == null) {
-            throw new InvalidCredentialException("Invalid username");
+            throw new InvalidPlayerException("Id not found");
         }
-        if (!player.getPassword().equals(password)) {
-            throw new InvalidCredentialException("Invalid password");
+        return player;
+    }
+    
+    public Player findByUsername(String username) {
+        Player player = playerRepository.findByUsername(username);
+        if (player == null) {
+            throw new InvalidPlayerException("Username not found");
         }
         return player;
     }

@@ -9,14 +9,19 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer {
+
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gameplay").setAllowedOriginPatterns("*").withSockJS();
+        // /game is the HTTP URL for the endpoint to which a WebSocket client needs to connect for the WebSocket handshake
+        registry.addEndpoint("/game")
+                .setAllowedOrigins("http://localhost:3000");
     }
 
     @Override
-    public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.setApplicationDestinationPrefixes("/app").enableSimpleBroker("/topic");
+    public void configureMessageBroker(MessageBrokerRegistry config) {
+        // STOMP messages whose destination header begins with /app are routed to @MessageMapping methods in @Controller classes
+        config.setApplicationDestinationPrefixes("/app");
+        // Use the built-in message broker for subscriptions and broadcasting and route messages whose destination header begins with /topic or /queue to the broker
+        config.enableSimpleBroker("/topic", "/queue");
     }
 }
-

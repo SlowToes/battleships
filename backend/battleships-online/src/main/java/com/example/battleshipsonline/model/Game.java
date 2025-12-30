@@ -1,56 +1,46 @@
 package com.example.battleshipsonline.model;
 
 import com.example.battleshipsonline.model.enums.GameStatus;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
-import java.util.Random;
+import java.util.UUID;
 
+@Entity
+@Table(name = "games")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Game {
-    private final Random random = new Random();
-    private String gameId;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "game_id")
+    private UUID gameId;
+
+    @Enumerated(EnumType.STRING)
     private GameStatus status;
-    private Player player1;
-    private Player player2;
-    private Board player1Board;
-    private Board player2Board;
+
+    @Column(name = "player1_id")
+    private Long player1Id;
+
+    @Column(name = "player2_id")
+    private Long player2Id;
+
+    @Column(name = "player1_board_id")
+    private Long player1BoardId;
+
+    @Column(name = "player2_board_id")
+    private Long player2BoardId;
+
+    @Column(name = "player1_turn")
     private boolean player1Turn;
 
-    public void setTurn() {
-        player1Turn = random.nextBoolean();
-    }
+    @Column(name = "player1_ready")
+    private boolean player1Ready;
 
-    public boolean isWaitingForPlayer() {
-        return player2 == null;
-    }
-
-    public Board getPlayersBoard(Player player) {
-        return player.equals(player1) ? player1Board : player2Board;
-    }
-
-    public Board getOpponentBoard(Player player) {
-        return player.equals(player1) ? player2Board : player1Board;
-    }
-
-    public boolean isPlayersTurn(Player player) {
-        return (player1Turn && player.equals(player1)) || (!player1Turn && player.equals(player2));
-    }
-
-    public void switchTurn() {
-        player1Turn = !player1Turn;
-    }
-
-    public boolean isGameOver() {
-        return player1Board.allShipsSunk() || player2Board.allShipsSunk();
-    }
-
-    public Player getWinner() {
-        return player1Board.allShipsSunk() ? player2 : player1;
-    }
+    @Column(name = "player2_ready")
+    private boolean player2Ready;
 }

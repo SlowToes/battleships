@@ -1,19 +1,20 @@
 package com.example.battleshipsonline.model;
 
-import com.example.battleshipsonline.exception.InvalidCoordinateException;
+import com.example.battleshipsonline.exception.ex.InvalidCoordinateException;
 import com.example.battleshipsonline.model.enums.ShipOrientation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import static com.example.battleshipsonline.model.Board.SIZE;
+import static com.example.battleshipsonline.model.BoardState.SIZE;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class Coordinate {
+
     private int row;
     private int col;
 

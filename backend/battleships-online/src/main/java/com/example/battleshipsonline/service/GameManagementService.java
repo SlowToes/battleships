@@ -1,53 +1,57 @@
 package com.example.battleshipsonline.service;
 
-import com.example.battleshipsonline.exception.InvalidGameException;
+import com.example.battleshipsonline.exception.ex.InvalidGameException;
 import com.example.battleshipsonline.model.Board;
 import com.example.battleshipsonline.model.Game;
-import com.example.battleshipsonline.model.Player;
 import com.example.battleshipsonline.model.enums.GameStatus;
+import com.example.battleshipsonline.repository.GameRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
+@RequiredArgsConstructor
 public class GameManagementService {
-    private final Map<String, Game> games = new ConcurrentHashMap<>();
 
-    public Game createGame(Player player) {
-        String gameId = UUID.randomUUID().toString().substring(0, 8);
+    private final GameRepository gameRepository;
+    private final BoardService boardService;
+    private final GameService gameService;
+    private final SimpMessagingTemplate template;
 
-        Game game = new Game();
-        game.setGameId(gameId);
-        game.setStatus(GameStatus.NEW);
-        game.setPlayer1(player);
-        game.setPlayer1Board(new Board());
-        game.setTurn();
+    public Game createGame(Long playerId) {
+        Board board = new Board();
+        boardService.save(board);
 
-        games.put(gameId, game);
-        return game;
+        Game game = Game.builder()
+                .status(GameStatus.NEW)
+                .player1Id(playerId)
+                .player1BoardId(board.getBoardId())
+                .build();
+
+        return gameRepository.save(game);
     }
 
-    public void connectToGame(String gameId, Player player) {
-        Game game = getGame(gameId);
-        if (game.getPlayer1().getUsername().equals(player.getUsername())) {
+    public void connectToGame(UUID gameId, Long playerId) {
+        Game game = gameService.getGame(gameId);
+        if (game.getPlayer1Id().equals(playerId)) {
             throw new InvalidGameException("You can't join your own game");
         }
-        if (!game.isWaitingForPlayer()) {
+        if (!gameService.isWaitingForPlayer(game)) {
             throw new InvalidGameException("Game is already full");
         }
 
-        game.setStatus(GameStatus.PLACING_SHIPS);
-        game.setPlayer2(player);
-        game.setPlayer2Board(new Board());
-    }
+        Board board = new Board();
+        boardService.save(board);
 
-    public Game getGame(String gameId) {
-        Game game = games.get(gameId);
-        if (game == null) {
-            throw new InvalidGameException("Game not found");
-        }
-        return game;
+        game.setPlayer2Id(playerId);
+        game.setPlayer2BoardId(board.getBoardId());
+        game.setStatus(GameStatus.PLACING_SHIPS);
+        gameService.randomlyAssignFirstTurn(game);
+
+        gameRepository.save(game);
+
+        template.convertAndSend("/topic/game/" + gameId.toString() + "/ready", "READY");
     }
 }

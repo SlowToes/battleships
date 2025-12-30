@@ -1,5 +1,6 @@
-package com.example.battleshipsonline.exception;
+package com.example.battleshipsonline.exception.ex;
 
+import com.example.battleshipsonline.exception.GameException;
 import org.springframework.http.HttpStatus;
 
 public class InvalidCoordinateException extends GameException {
