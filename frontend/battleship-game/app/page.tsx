@@ -1,17 +1,14 @@
 "use client";
 
-import { useMain } from "@/lib/hooks/auth/useMain"
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useAuth } from "@/components/auth/useAuth";
 import Image from "next/image";
 
 export default function MainPage() {
-    const {
-        errorMessage,
-        handleGuestLogin,
-        goToSignup,
-        goToLogin,
-    } = useMain();
+    const router = useRouter();
+    const { loginAsGuest, errorMessage, loading } = useAuth();
 
     return (
         <main className="min-h-screen flex items-center justify-center bg-gray-900 p-4 text-white">
@@ -24,26 +21,14 @@ export default function MainPage() {
                         alt="Battleships"
                         className="w-64 h-40 rounded-xl shadow-lg object-cover"
                     />
-                    <Button
-                        className="rounded-2xl py-4 text-lg w-full bg-gray-600 hover:bg-gray-700 text-white"
-                        variant="default"
-                        onClick={handleGuestLogin}
-                    >
+                    <Button className="rounded-2xl py-4 text-lg w-full bg-gray-600 hover:bg-gray-700 hover:cursor-pointer text-white" variant="default" onClick={loginAsGuest} disabled={loading}>
                         Login as Guest
                     </Button>
                     {errorMessage && <p role="alert" className="text-red-400 text-center">{errorMessage}</p>}
-                    <Button
-                        className="rounded-2xl py-4 text-lg w-full"
-                        variant="secondary"
-                        onClick={goToSignup}
-                    >
+                    <Button className="rounded-2xl py-4 text-lg w-full hover:cursor-pointer" variant="secondary" onClick={() => router.push("/signup")}>
                         Sign Up
                     </Button>
-                    <Button
-                        className="rounded-2xl py-4 text-lg w-full"
-                        variant="secondary"
-                        onClick={goToLogin}
-                    >
+                    <Button className="rounded-2xl py-4 text-lg w-full hover:cursor-pointer" variant="secondary" onClick={() => router.push("/login")}>
                         Login
                     </Button>
                 </CardContent>
