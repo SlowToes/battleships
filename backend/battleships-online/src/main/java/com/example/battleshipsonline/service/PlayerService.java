@@ -65,6 +65,10 @@ public class PlayerService implements UserDetailsService {
     }
 
     public Player createPlayer(HttpServletRequest request, HttpServletResponse response, String username, String password) {
+        if (playerRepository.existsByUsername(username)) {
+            throw new InvalidPlayerException("Username already exists");
+        }
+
         Player player = Player.builder()
                 .username(username)
                 .password(passwordEncoder.encode(password))

@@ -52,7 +52,7 @@ export function useAuth() {
         });
 
         if (!res.ok) {
-            setErrorMessage("Signup failed");
+            setErrorMessage("Username already exists");
             setLoading(false);
             return;
         }
