@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useGameManagement } from "@/components/home/useGameManagement";
 import { useAuth } from "@/components/auth/useAuth";
 import { useHomeSocket } from "@/components/home/useHomeSocket";
-import { HomeMode } from "@/lib/homeTypes";
+import { HomeMode } from "@/lib/types";
 import Image from "next/image";
 
 export default function HomePage() {

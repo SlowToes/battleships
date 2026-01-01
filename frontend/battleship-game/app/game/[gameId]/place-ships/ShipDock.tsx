@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Ship, Orientation } from "@/lib/shipTypes";
+import { Ship, Orientation } from "@/lib/types";
 
 interface ShipDockProps {
     ships: Ship[];

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { HomeMode } from "@/lib/homeTypes";
+import { HomeMode } from "@/lib/types";
 
 const API_URL = "http://localhost:8080";
 

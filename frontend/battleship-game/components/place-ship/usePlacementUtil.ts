@@ -1,4 +1,4 @@
-import { Coordinate, Orientation, GRID_SIZE } from "@/lib/shipTypes";
+import { Coordinate, Orientation, GRID_SIZE } from "@/lib/types";
 
 export function calculateCoordinates(
     start: Coordinate,

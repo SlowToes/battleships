@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { usePlaceShipSocket } from "@/components/place-ship/usePlaceShipSocket";
 import { useShipPlacement } from "@/components/place-ship/useShipPlacement";
-import { GRID_SIZE } from "@/lib/shipTypes";
+import { GRID_SIZE } from "@/lib/types";
 
 export default function ShipPlacementPage({ params }: {
     params: Promise<{ gameId: string }>;

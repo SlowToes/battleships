@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { calculateCoordinates, isOutOfBounds, overlapsExisting } from "@/components/place-ship/usePlacementUtil";
-import { SHIPS, Ship, Orientation, Coordinate } from "@/lib/shipTypes";
+import { SHIPS, Ship, Orientation, Coordinate } from "@/lib/types";
 
 const API_URL = "http://localhost:8080";
 
