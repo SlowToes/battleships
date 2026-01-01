@@ -69,6 +69,7 @@ public class ShipPlacementService {
         Game game = gameService.getGame(gameId);
         if (gameService.bothPlayersReady(game)) {
             game.setStatus(GameStatus.IN_PROGRESS);
+            gameService.save(game);
 
             template.convertAndSend("/topic/game/" + gameId.toString() + "/place-ships", "BOTH_READY");
         }

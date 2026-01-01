@@ -31,8 +31,13 @@ public class GameService {
         return game;
     }
 
+    public void save(Game game) {
+        gameRepository.save(game);
+    }
+
     public void randomlyAssignFirstTurn(Game game) {
         game.setPlayer1Turn(new Random().nextBoolean());
+        gameRepository.save(game);
     }
 
     public boolean isWaitingForPlayer(Game game) {
@@ -65,6 +70,7 @@ public class GameService {
         } else {
             game.setPlayer2Ready(true);
         }
+        gameRepository.save(game);
     }
 
     public boolean bothPlayersReady(Game game) {
@@ -78,6 +84,7 @@ public class GameService {
 
     public void switchTurn(Game game) {
         game.setPlayer1Turn(!game.isPlayer1Turn());
+        gameRepository.save(game);
     }
 
     public boolean isGameOver(Game game) {
