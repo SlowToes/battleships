@@ -20,7 +20,7 @@ public class BoardState {
     public BoardState() {
         for (int row = 1; row <= SIZE; row++) {
             for (int col = 1; col <= SIZE; col++) {
-                grid[row][col] = new Cell(false, false, false, null);
+                grid[row][col] = new Cell(false, false, false);
             }
         }
     }
@@ -51,7 +51,7 @@ public class BoardState {
 
     public Ship getShipByCoordinate(Coordinate c) {
         for (Ship ship : ships) {
-            if (ship.getName() == getCell(c).getName()) {
+            if (ship.getPosition().contains(c)) {
                 return ship;
             }
         }
