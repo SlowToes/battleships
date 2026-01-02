@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Ship, Orientation } from "@/lib/types";
+import { formatShipName } from "@/lib/utils";
 
 interface ShipDockProps {
     ships: Ship[];
@@ -28,7 +29,7 @@ export default function ShipDock({ships, selectedShip, orientation, onSelectShip
                     ${ship.placed ? "opacity-50" : ""}
                     `}
                 >
-                    {ship.name} ({ship.size})
+                    {formatShipName(ship.name)} ({ship.size})
                 </Button>
             ))}
 

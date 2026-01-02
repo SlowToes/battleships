@@ -19,6 +19,7 @@ export default function HomePage() {
     const {
         gameIdInput,
         setGameIdInput,
+        myUsername,
         errorMessage,
         setErrorMessage,
         loading,
@@ -31,6 +32,7 @@ export default function HomePage() {
     return (
         <main className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-6 gap-6">
             <Card className="bg-gray-800 text-white max-w-3xl w-full rounded-2xl shadow-lg p-8">
+                <h1 className="text-5xl font-bold text-center text-cyan-200">Welcome {myUsername}!</h1>
                 <CardContent className="flex gap-8">
                     <Image
                         src="https://cdn.dribbble.com/userupload/22555646/file/original-42564b58ad494881ba20ceedf3a6656b.gif"

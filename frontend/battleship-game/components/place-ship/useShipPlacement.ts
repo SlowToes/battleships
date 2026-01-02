@@ -115,7 +115,7 @@ export function useShipPlacement(gameId: string) {
         }
 
         setIsReady(true);
-        setErrorMessage("");
+        setErrorMessage("You have readied. Waiting for opponent...");
         setSelectedShip(null);
         setHoverCoords([]);
     }

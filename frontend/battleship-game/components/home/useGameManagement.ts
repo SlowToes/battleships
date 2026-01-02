@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { HomeMode } from "@/lib/types";
 
 const API_URL = "http://localhost:8080";
@@ -10,8 +10,23 @@ export function useGameManagement(
     setMode: React.Dispatch<React.SetStateAction<HomeMode>>
 ) {
     const [gameIdInput, setGameIdInput] = useState("");
+    const [myUsername, setMyUsername] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        fetch(`${API_URL}/api/play/me`, {
+            credentials: "include",
+        })
+            .then(async (res) => {
+                if (!res.ok) {
+                    setErrorMessage("Error getting username from server");
+                    return;
+                }
+                const text = await res.text();
+                setMyUsername(text);
+            })
+    }, []);
 
     const createGame = async () => {
         setErrorMessage("");
@@ -66,6 +81,7 @@ export function useGameManagement(
     return {
         gameIdInput,
         setGameIdInput,
+        myUsername,
         errorMessage,
         setErrorMessage,
         loading,
