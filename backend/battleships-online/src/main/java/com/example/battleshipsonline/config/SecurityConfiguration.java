@@ -65,20 +65,20 @@ public class SecurityConfiguration {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
-    DriverManagerDataSource dataSource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/battleships");
-        dataSource.setUsername("root");
-        dataSource.setPassword("root");
-        return dataSource;
-    }
+    // @Bean
+    // DriverManagerDataSource dataSource() {
+    //     DriverManagerDataSource dataSource = new DriverManagerDataSource();
+    //     dataSource.setDriverClassName("org.postgresql.Driver");
+    //     dataSource.setUrl("jdbc:postgresql://localhost:5432/battleships");
+    //     dataSource.setUsername("root");
+    //     dataSource.setPassword("root");
+    //     return dataSource;
+    // }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:3000"));
+        config.setAllowedOrigins(List.of("http://localhost:3000", "https://*.vercel.app"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { calculateCoordinates, isOutOfBounds, overlapsExisting } from "@/components/place-ship/usePlacementUtil";
 import { SHIPS, Ship, Orientation, Coordinate } from "@/lib/types";
 
-const API_URL = "http://localhost:8080";
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 export function useShipPlacement(gameId: string) {
     const [ships, setShips] = useState<Ship[]>(SHIPS);

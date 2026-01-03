@@ -5,7 +5,7 @@ import { useGameplaySocket } from "@/components/play/useGameplaySocket";
 import { Coordinate, FireResult, FireResultType, OwnCellState, TargetCellState } from "@/lib/types";
 import { formatShipName } from "@/lib/utils";
 
-const API_URL = "http://localhost:8080";
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 export function useGameplay(gameId: string) {
     const [statusMessage, setStatusMessage] = useState("Game Started!");

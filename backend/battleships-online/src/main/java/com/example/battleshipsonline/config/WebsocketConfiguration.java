@@ -14,7 +14,7 @@ public class WebsocketConfiguration implements WebSocketMessageBrokerConfigurer 
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // /game is the HTTP URL for the endpoint to which a WebSocket client needs to connect for the WebSocket handshake
         registry.addEndpoint("/game")
-                .setAllowedOrigins("http://localhost:3000");
+                .setAllowedOrigins("http://localhost:3000", "https://*.vercel.app");
     }
 
     @Override

@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from "react";
 import { HomeMode } from "@/lib/types";
 
-const API_URL = "http://localhost:8080";
+const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 export function useGameManagement(
     setActiveGameId: React.Dispatch<React.SetStateAction<string | null>>,

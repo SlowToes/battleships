@@ -1,10 +1,18 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/battleships
-    username: root
-    password: root
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    open-in-view: true
-    show-sql: true
+      ddl-auto: update
+    open-in-view: false
+    show-sql: false
+
+server:
+  port: ${PORT:8080}
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
