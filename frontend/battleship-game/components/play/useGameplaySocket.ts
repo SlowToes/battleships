@@ -9,6 +9,8 @@ export function useGameplaySocket(
     handlers: { onFireResult: (result: FireResult) => void; }
 ) {
     const handlerRef = useRef(handlers);
+    const backendUrl = process.env.REACT_APP_API_URL!;
+    const wsUrl = backendUrl.replace(/^http/, "ws") + "/game";
 
     useEffect(() => {
         handlerRef.current = handlers;
@@ -16,7 +18,7 @@ export function useGameplaySocket(
 
     useEffect(() => {
         const client = new Client({
-            brokerURL: "ws://localhost:8080/game",
+            brokerURL: wsUrl,
             reconnectDelay: 5000,
         });
 

@@ -8,8 +8,11 @@ export function useHomeSocket(gameId: string | null) {
     const router = useRouter();
 
     useEffect(() => {
+        const backendUrl = process.env.REACT_APP_API_URL!;
+        const wsUrl = backendUrl.replace(/^http/, "ws") + "/game";
+
         const client = new Client({
-            brokerURL: "ws://localhost:8080/game",
+            brokerURL: wsUrl,
             reconnectDelay: 5000,
         });
 
