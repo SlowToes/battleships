@@ -8,7 +8,7 @@ export function usePlaceShipSocket(gameId: string) {
     const router = useRouter();
 
     useEffect(() => {
-        const backendUrl = process.env.REACT_APP_API_URL!;
+        const backendUrl = process.env.NEXT_PUBLIC_API_URL!;
         const wsUrl = backendUrl.replace(/^http/, "ws") + "/game";
 
         const client = new Client({

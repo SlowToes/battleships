@@ -9,7 +9,7 @@ export function useGameplaySocket(
     handlers: { onFireResult: (result: FireResult) => void; }
 ) {
     const handlerRef = useRef(handlers);
-    const backendUrl = process.env.REACT_APP_API_URL!;
+    const backendUrl = process.env.NEXT_PUBLIC_API_URL!;
     const wsUrl = backendUrl.replace(/^http/, "ws") + "/game";
 
     useEffect(() => {
