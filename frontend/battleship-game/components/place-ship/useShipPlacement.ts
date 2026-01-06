@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { calculateCoordinates, isOutOfBounds, overlapsExisting } from "@/components/place-ship/usePlacementUtil";
 import { SHIPS, Ship, Orientation, Coordinate } from "@/lib/types";
-
-const API_URL = "http://localhost:8080";
+import { CONFIG } from "@/lib/config";
 
 export function useShipPlacement(gameId: string) {
     const [ships, setShips] = useState<Ship[]>(SHIPS);
@@ -51,7 +50,7 @@ export function useShipPlacement(gameId: string) {
             return;
         }
 
-        const res = await fetch(`${API_URL}/api/games/${gameId}/ships/place`, {
+        const res = await fetch(`${CONFIG.API_URL}/api/games/${gameId}/ships/place`, {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },
@@ -85,7 +84,7 @@ export function useShipPlacement(gameId: string) {
     async function handleReset() {
         if (isReady) return;
 
-        const res = await fetch(`${API_URL}/api/games/${gameId}/ships/reset`, {
+        const res = await fetch(`${CONFIG.API_URL}/api/games/${gameId}/ships/reset`, {
             method: "POST",
             credentials: "include",
         });
@@ -104,7 +103,7 @@ export function useShipPlacement(gameId: string) {
     async function handleReady() {
         if (isReady) return;
 
-        const res = await fetch(`${API_URL}/api/games/${gameId}/ships/ready`, {
+        const res = await fetch(`${CONFIG.API_URL}/api/games/${gameId}/ships/ready`, {
             method: "POST",
             credentials: "include",
         });

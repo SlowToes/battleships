@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-
-const API_URL = "http://localhost:8080";
+import { CONFIG } from "@/lib/config";
 
 export function useAuth() {
     const router = useRouter();
@@ -19,7 +18,7 @@ export function useAuth() {
         setLoading(true);
         resetError();
 
-        const res = await fetch(`${API_URL}/api/players/login`, {
+        const res = await fetch(`${CONFIG.API_URL}/api/players/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -42,7 +41,7 @@ export function useAuth() {
         setLoading(true);
         resetError();
 
-        const res = await fetch(`${API_URL}/api/players/signup`, {
+        const res = await fetch(`${CONFIG.API_URL}/api/players/signup`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -65,7 +64,7 @@ export function useAuth() {
         setLoading(true);
         resetError();
 
-        const res = await fetch(`${API_URL}/api/players/guest`, {
+        const res = await fetch(`${CONFIG.API_URL}/api/players/guest`, {
             method: "POST",
             credentials: "include",
         });
@@ -84,7 +83,7 @@ export function useAuth() {
         setLoading(true);
         resetError();
 
-        await fetch(`${API_URL}/logout`, {
+        await fetch(`${CONFIG.API_URL}/logout`, {
             method: "POST",
         })
 

@@ -3,13 +3,14 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Client } from "@stomp/stompjs";
+import { CONFIG } from "@/lib/config";
 
 export function useHomeSocket(gameId: string | null) {
     const router = useRouter();
 
     useEffect(() => {
         const client = new Client({
-            brokerURL: "ws://localhost:8080/game",
+            brokerURL: CONFIG.WS_URL,
             reconnectDelay: 5000,
         });
 

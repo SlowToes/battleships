@@ -2,8 +2,7 @@
 
 import React, {useEffect, useState} from "react";
 import { HomeMode } from "@/lib/types";
-
-const API_URL = "http://localhost:8080";
+import { CONFIG } from "@/lib/config";
 
 export function useGameManagement(
     setActiveGameId: React.Dispatch<React.SetStateAction<string | null>>,
@@ -15,7 +14,7 @@ export function useGameManagement(
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        fetch(`${API_URL}/api/play/me`, {
+        fetch(`${CONFIG.API_URL}/api/play/me`, {
             credentials: "include",
         })
             .then(async (res) => {
@@ -33,7 +32,7 @@ export function useGameManagement(
         setLoading(true);
         setMode("CREATING");
 
-        const res = await fetch(`${API_URL}/api/games/create`, {
+        const res = await fetch(`${CONFIG.API_URL}/api/games/create`, {
             method: "POST",
             credentials: "include",
         });
@@ -60,7 +59,7 @@ export function useGameManagement(
         setMode("JOINING_CONNECTING");
 
         const res = await fetch(
-            `${API_URL}/api/games/${gameIdInput}/join`, {
+            `${CONFIG.API_URL}/api/games/${gameIdInput}/join`, {
                 method: "POST",
                 credentials: "include",
             }

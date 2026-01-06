@@ -1,0 +1,15 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/battleships
+    username: root
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: true
+    show-sql: true

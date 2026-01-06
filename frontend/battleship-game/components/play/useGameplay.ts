@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 import { useGameplaySocket } from "@/components/play/useGameplaySocket";
 import { Coordinate, FireResult, FireResultType, OwnCellState, TargetCellState } from "@/lib/types";
 import { formatShipName } from "@/lib/utils";
-
-const API_URL = "http://localhost:8080";
+import { CONFIG } from "@/lib/config";
 
 export function useGameplay(gameId: string) {
     const [statusMessage, setStatusMessage] = useState("Game Started!");
@@ -22,7 +21,7 @@ export function useGameplay(gameId: string) {
     );
 
     useEffect(() => {
-        fetch(`${API_URL}/api/play/me`, {
+        fetch(`${CONFIG.API_URL}/api/play/me`, {
             credentials: "include",
         })
             .then(async (res) => {
@@ -38,7 +37,7 @@ export function useGameplay(gameId: string) {
     useEffect(() => {
         if (!myUsername) return;
 
-        fetch(`${API_URL}/api/play/${gameId}/coordinates`, {
+        fetch(`${CONFIG.API_URL}/api/play/${gameId}/coordinates`, {
             credentials: "include",
         })
             .then(async (res) => {
@@ -63,7 +62,7 @@ export function useGameplay(gameId: string) {
     useEffect(() => {
         if (!myUsername) return;
 
-        fetch(`${API_URL}/api/play/${gameId}/initial`, {
+        fetch(`${CONFIG.API_URL}/api/play/${gameId}/initial`, {
             credentials: "include",
         })
             .then(res => res.text())
@@ -134,7 +133,7 @@ export function useGameplay(gameId: string) {
         setErrorMessage("");
         if (!isMyTurn || targetBoard[row][col] !== "EMPTY") return;
 
-        const res = await fetch(`${API_URL}/api/play/${gameId}/fire`, {
+        const res = await fetch(`${CONFIG.API_URL}/api/play/${gameId}/fire`, {
             method: "POST",
             credentials: "include",
             headers: { "Content-Type": "application/json" },

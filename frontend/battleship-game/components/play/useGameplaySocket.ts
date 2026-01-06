@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Client } from "@stomp/stompjs";
 import { FireResult } from "@/lib/types";
+import { CONFIG } from "@/lib/config";
 
 export function useGameplaySocket(
     gameId: string,
@@ -16,7 +17,7 @@ export function useGameplaySocket(
 
     useEffect(() => {
         const client = new Client({
-            brokerURL: "ws://localhost:8080/game",
+            brokerURL: CONFIG.WS_URL,
             reconnectDelay: 5000,
         });
 
