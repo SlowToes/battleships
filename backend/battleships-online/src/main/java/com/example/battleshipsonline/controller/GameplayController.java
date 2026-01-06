@@ -24,6 +24,11 @@ public class GameplayController {
         return playerService.findByUsername(principal.getName()).getUsername();
     }
 
+    @GetMapping("/{gameId}/opponent")
+    public String getOpponentUsername(@PathVariable String gameId, Principal principal) {
+        return gameplayService.getOpponentUsername(UUID.fromString(gameId), playerService.findByUsername(principal.getName()));
+    }
+
     @GetMapping("/{gameId}/initial")
     public String getStartingPlayerUsername(@PathVariable String gameId) {
         return gameplayService.getStartingPlayerUsername(UUID.fromString(gameId));

@@ -1,15 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useGameplaySocket } from "@/components/play/useGameplaySocket";
-import { Coordinate, FireResult, FireResultType, OwnCellState, TargetCellState } from "@/lib/types";
-import { formatShipName } from "@/lib/utils";
-import { CONFIG } from "@/lib/config";
+import {useEffect, useState} from "react";
+import {useGameplaySocket} from "@/components/play/useGameplaySocket";
+import {Coordinate, FireResult, FireResultType, OwnCellState, TargetCellState} from "@/lib/types";
+import {formatShipName} from "@/lib/utils";
+import {CONFIG} from "@/lib/config";
 
 export function useGameplay(gameId: string) {
     const [statusMessage, setStatusMessage] = useState("Game Started!");
     const [errorMessage, setErrorMessage] = useState("");
     const [myUsername, setMyUsername] = useState<string | null>(null);
+    const [opponentUsername, setOpponentUsername] = useState<string | null>(null);
     const [winnerUsername, setWinnerUsername] = useState<string | null>(null);
     const [isMyTurn, setIsMyTurn] = useState(false);
     const [isGameOver, setIsGameOver] = useState(false);
@@ -33,6 +34,20 @@ export function useGameplay(gameId: string) {
                 setMyUsername(text);
             })
     }, []);
+
+    useEffect(() => {
+        fetch(`${CONFIG.API_URL}/api/play/${gameId}/opponent`, {
+            credentials: "include",
+        })
+            .then(async (res) => {
+                if (!res.ok) {
+                    setErrorMessage("Error getting opponent username from server");
+                    return;
+                }
+                const text = await res.text();
+                setOpponentUsername(text);
+            })
+    }, [gameId]);
 
     useEffect(() => {
         if (!myUsername) return;
@@ -106,7 +121,7 @@ export function useGameplay(gameId: string) {
     });
 
     const handleStatusMessage = (result: FireResult, isMyTurn: boolean) => {
-        if (result.winnerUsername) {
+        if (result.fireResultType === FireResultType.GAME_OVER) {
             setWinnerUsername(result.winnerUsername);
             setStatusMessage(result.winnerUsername === myUsername ? `YOU SANK THEIR ${formatShipName(result.sunkShipName)}!` : `THEY SANK YOUR ${formatShipName(result.sunkShipName)}!`);
             setIsGameOver(true);
@@ -149,6 +164,7 @@ export function useGameplay(gameId: string) {
         statusMessage,
         errorMessage,
         myUsername,
+        opponentUsername,
         winnerUsername,
         isMyTurn,
         isGameOver,

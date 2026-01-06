@@ -24,6 +24,15 @@ public class GameplayService {
     private final BoardService boardService;
     private final SimpMessagingTemplate template;
 
+    public String getOpponentUsername(UUID gameId, Player player) {
+        Game game = gameService.getGame(gameId);
+        if (game.getPlayer1Id().equals(player.getPlayerId())) {
+            return playerService.findByPlayerId(game.getPlayer2Id()).getUsername();
+        } else {
+            return playerService.findByPlayerId(game.getPlayer1Id()).getUsername();
+        }
+    }
+
     public String getStartingPlayerUsername(UUID gameId) {
         Game game = gameService.getGame(gameId);
         return getCurrentTurnPlayerUsername(game);

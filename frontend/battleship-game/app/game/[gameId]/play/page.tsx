@@ -18,6 +18,7 @@ export default function GameplayPage({ params }: {
         statusMessage,
         errorMessage,
         myUsername,
+        opponentUsername,
         winnerUsername,
         isMyTurn,
         isGameOver,
@@ -38,12 +39,12 @@ export default function GameplayPage({ params }: {
 
                 <div className="flex gap-12">
                     <div className="flex flex-col items-center gap-2">
-                        <h2 className="text-2xl font-semibold">Your Board</h2>
+                        <h2 className="text-2xl font-semibold">Your Board ({myUsername})</h2>
                         <OwnBoard board={ownBoard} />
                     </div>
 
                     <div className="flex flex-col items-center gap-2">
-                        <h2 className="text-2xl font-semibold">Target Board</h2>
+                        <h2 className="text-2xl font-semibold">Target Board ({opponentUsername})</h2>
                         <TargetBoard
                             board={targetBoard}
                             onFire={fireAt}
