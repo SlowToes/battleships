@@ -6,11 +6,14 @@ A multiplayer Battleships game built with a **Spring Boot backend** and a **Type
 - **Backend:** Spring Boot (Java)
 - **Frontend:** TypeScript
 - **Database:** PostgreSQL
-- **Real-time Communication:** WebSockets
+
+### Development
+- **Frontend** testing
+  http://localhost:3000/
 
 ### Deployment
 - **Backend & Database:** Render
   https://battleships-v2y0.onrender.com
 
 - **Frontend:** Vercel
-- https://battleships-lime-beta.vercel.app/
+  https://battleships-lime-beta.vercel.app/
